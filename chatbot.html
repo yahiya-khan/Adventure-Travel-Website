@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Chatbot</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+    rel="apple-touch-icon"
+    sizes="180x180"
+    href="img/apple-touch-icon.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="32x32"
+    href="img/favicon-32x32.png"
+  />
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="16x16"
+    href="img/favicon-16x16.png"
+  />
+    <style>
+        body {
+            background: linear-gradient(135deg, #1a1a3d, #00c4cc, #f9e076);
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+        .chat-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            border: 3px solid #00c4cc;
+        }
+        .chat-header {
+            background: linear-gradient(90deg, #1a1a3d, #2e2e5e);
+            color: #f9e076;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 4px solid #00c4cc;
+        }
+        .chat-header h3 {
+            margin: 0;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+        .chat-header p {
+            margin: 5px 0 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        .chat-body {
+            padding: 20px;
+            height: 450px;
+            overflow-y: auto;
+            background: url('https://source.unsplash.com/900x450/?travel,world') center/cover no-repeat;
+            position: relative;
+        }
+        .chat-body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            z-index: 1;
+        }
+        .chat-message {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+            word-wrap: break-word;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+        }
+        .user-message {
+            background: #f9e076;
+            color: #1a1a3d;
+            margin-left: auto;
+            border: 2px solid #2e2e5e;
+        }
+        .bot-message {
+            background: #00c4cc;
+            color: #1a1a3d;
+            border: 2px solid #2e2e5e;
+        }
+        .chat-footer {
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 3px solid #00c4cc;
+        }
+        .prompt-btn {
+            margin: 5px;
+            background: #2e2e5e;
+            color: #f9e076;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .prompt-btn:hover {
+            background: #f9e076;
+            color: #1a1a3d;
+            transform: translateY(-2px);
+        }
+        #chatInput {
+            border-radius: 20px;
+            border: 2px solid #2e2e5e;
+            padding: 8px;
+            font-size: 1rem;
+        }
+        #sendBtn {
+            border-radius: 20px;
+            background: #00c4cc;
+            border: none;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        #sendBtn:hover {
+            background: #f9e076;
+            color: #1a1a3d;
+            transform: translateY(-2px);
+        }
+        .template-text {
+            font-size: 0.8rem;
+            color: #2e2e5e;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .chat-message {
+            animation: fadeIn 0.4s ease-in;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>Adventure Chatbot</h3>
+            <p>Your Best Guide to 195 Countries of Woeld</p>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-message bot-message">Hey, you gorgeous explorer! I’ve got 195 countries loaded with best cities and sizzling sights. Where’s your next adventure?</div>
+        </div>
+        <div class="chat-footer">
+            <div class="d-flex flex-wrap justify-content-center mb-3">
+                <button class="prompt-btn" onclick="sendPrompt('What’s hot in Brazil?')">Brazil Vibes</button>
+                <button class="prompt-btn" onclick="sendPrompt('Top places in Japan?')">Japan Spots</button>
+                <button class="prompt-btn" onclick="sendPrompt('Sights in Canada?')">Canada Sights</button>
+                <button class="prompt-btn" onclick="sendPrompt('What’s sexy in France?')">France Thrills</button>
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" id="chatInput" placeholder="Ask about countries, cities, or sights...">
+                <button class="btn" id="sendBtn">Send</button>
+            </div>
+            <div class="template-text">
+                Try: "What’s best in [country]?" or "Places in [city]?"
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Link to your external dataset -->
+    <script src="chatdataset.js"></script>
+    <script>
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+    
+        // Greetings for flirty flair
+        const greetings = [
+            "Hey, explorer! Where’s your next steamy escape?",
+            "Hello, gorgeous wanderer! Ready to uncover some awesome destinations?",
+            "Hi, you dazzling traveler! Where’s our next adventure?"
+        ];
+    
+        // Country shortcuts
+        const countryShortcuts = {
+            "in": "india",
+            "br": "brazil",
+            "jp": "japan",
+            "fr": "france",
+            "us": "united states",
+            "uk": "united kingdom"
+        };
+    
+        // Fuzzy matching with typo tolerance
+        function fuzzyMatch(input, targets, threshold = 3) {
+            const lowerInput = input.toLowerCase();
+    
+            // Check shortcuts first
+            if (countryShortcuts[lowerInput]) return countryShortcuts[lowerInput];
+    
+            // Exact or substring match
+            const exactMatch = targets.find(target => {
+                const lowerTarget = target.toLowerCase();
+                return lowerInput === lowerTarget || lowerTarget.includes(lowerInput) || lowerInput.includes(lowerTarget);
+            });
+            if (exactMatch) return exactMatch;
+    
+            // Levenshtein distance for typos
+            let minDistance = threshold + 1;
+            let bestMatch = null;
+            targets.forEach(target => {
+                const distance = levenshteinDistance(lowerInput, target.toLowerCase());
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    bestMatch = target;
+                }
+            });
+            return minDistance <= threshold ? bestMatch : null;
+        }
+    
+        function levenshteinDistance(str1, str2) {
+            const m = str1.length, n = str2.length;
+            const dp = Array(m + 1).fill().map(() => Array(n + 1).fill(0));
+            for (let i = 0; i <= m; i++) dp[i][0] = i;
+            for (let j = 0; j <= n; j++) dp[0][j] = j;
+            for (let i = 1; i <= m; i++) {
+                for (let j = 1; j <= n; j++) {
+                    dp[i][j] = str1[i - 1] === str2[j - 1] ? dp[i - 1][j - 1] : 
+                        Math.min(dp[i - 1][j - 1] + 1, dp[i][j - 1] + 1, dp[i - 1][j] + 1);
+                }
+            }
+            return dp[m][n];
+        }
+    
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+    
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+    
+            // Display user message
+            const userMsg = document.createElement('div');
+            userMsg.classList.add('chat-message', 'user-message');
+            userMsg.textContent = message;
+            chatBody.appendChild(userMsg);
+            chatInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+    
+            // Detect country and city
+            const lowerMessage = message.toLowerCase();
+            const countries = Object.keys(countryData.countries);
+            const detectedCountry = fuzzyMatch(lowerMessage, countries);
+            let detectedCity = null;
+    
+            if (detectedCountry) {
+                const cities = Object.keys(countryData.countries[detectedCountry].cities);
+                detectedCity = fuzzyMatch(lowerMessage, cities);
+            }
+    
+            // Generate and display bot response
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.classList.add('chat-message', 'bot-message');
+                botMsg.textContent = generateResponse(detectedCountry, detectedCity);
+                chatBody.appendChild(botMsg);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 500);
+        }
+    
+        function generateResponse(detectedCountry, detectedCity) {
+            let response = "";
+    
+            // Random greeting (50% chance or first message)
+            if (chatBody.children.length === 1 || Math.random() < 0.5) {
+                const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+                response += `${randomGreeting} `;
+            }
+    
+            if (detectedCountry) {
+                const countryName = detectedCountry.charAt(0).toUpperCase() + detectedCountry.slice(1);
+                const cities = countryData.countries[detectedCountry].cities;
+    
+                if (detectedCity) {
+                    const cityName = detectedCity.charAt(0).toUpperCase() + detectedCity.slice(1);
+                    const attractions = cities[detectedCity].attractions.join(', ');
+                    response += `Oh, ${cityName} in ${countryName} is pure magic! Check out ${attractions}. Where’s your next stop?`;
+                } else {
+                    const cityList = Object.keys(cities)
+                        .map(city => `${city} (${cities[city].attractions[0]})`)
+                        .join(', ');
+                    response += `${countryName} is calling, Explore ${cityList}. Which one’s welcomes you?`;
+                }
+            } else {
+                response += `Oops, I didn’t catch that! Throw me a country or city—typos or shortcuts like 'IN' work too! Where’s your heart heading?`;
+            }
+    
+            return response;
+        }
+    
+        function sendPrompt(prompt) {
+            chatInput.value = prompt;
+            sendMessage();
+        }
+    </script>
+</body>
+</html>

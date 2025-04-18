@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f4f4;
+            text-align: center;
+        }
+        .event-container {
+            background: white;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        .event-container h1 {
+            color: #ff5469;
+            margin-bottom: 10px;
+        }
+        .event-image {
+            width: 100%;
+            max-height: 350px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .event-info, .pricing, .itinerary, .inclusions, .what-to-bring, .contact-us {
+            text-align: left;
+            margin: 20px 0;
+        }
+        .event-info p, .pricing p, .itinerary p, .inclusions p, .what-to-bring p, .contact-us p {
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+        .event-info strong, .pricing strong, .itinerary strong, .inclusions strong, .what-to-bring strong, .contact-us strong {
+            color: #ff5469;
+        }
+        .section-title {
+            font-size: 1.5em;
+            color: #333;
+            border-bottom: 2px solid #ff5469;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        .event-description {
+            font-size: 1.2em;
+            line-height: 1.5;
+            color: #555;
+        }
+        .pricing-table {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .pricing-item {
+            flex: 1;
+            min-width: 200px;
+            margin: 10px;
+        }
+        .contact-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+        .contact-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="event-container">
+    <h1 id="event-title"></h1>
+    <img id="event-image" class="event-image" src="" alt="Event Image">
+    <div class="event-info">
+        <p><strong>Start Date:</strong> <span id="event-date"></span></p>
+        <p><strong>Tour Guide:</strong> <span id="event-guide"></span></p>
+    </div>
+    <p id="event-description" class="event-description"></p>
+
+    <div class="pricing">
+        <h2 class="section-title">Pricing Options</h2>
+        <div class="pricing-table">
+            <div class="pricing-item">
+                <p><strong>Individual:</strong> $<span id="event-price-individual"></span></p>
+            </div>
+            <div class="pricing-item">
+                <p><strong>Couple:</strong> $<span id="event-price-couple"></span></p>
+            </div>
+            <div class="pricing-item">
+                <p><strong>Family (4 pax):</strong> $<span id="event-price-family"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="itinerary">
+        <h2 class="section-title">What We'll Be Doing</h2>
+        <p id="event-itinerary"></p>
+    </div>
+
+    <div class="inclusions">
+        <h2 class="section-title">Inclusions & Exclusions</h2>
+        <p><strong>Included:</strong> <span id="event-inclusions"></span></p>
+        <p><strong>Excluded:</strong> <span id="event-exclusions"></span></p>
+    </div>
+
+    <div class="what-to-bring">
+        <h2 class="section-title">What to Bring</h2>
+        <p id="event-what-to-bring"></p>
+    </div>
+
+    <div class="contact-us">
+        <h2 class="section-title">Contact Us</h2>
+        <p><strong>Name:</strong> Affan Shaik</p>
+        <p><strong>Phone:</strong> 8121625037</p>
+        <p><strong>Email:</strong> adventure@gmail.com</p>
+        <a href="mailto:adventure@gmail.com" class="contact-button">Contact Us</a>
+    </div>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventId = urlParams.get("event");
+
+    const eventDetails = {
+        "port-of-spain-tour": {
+            title: "Port of Spain City Tour",
+            date: "February 10, 2025",
+            guide: "John Doe",
+            price: { individual: 150, couple: 280, family: 500 },
+            description: "Discover the vibrant culture and rich history of Port of Spain with an expert guide. This tour takes you through bustling markets, colonial architecture, and hidden gems of Trinidad's capital.",
+            itinerary: "Start with a visit to the Queen’s Park Savannah, explore the Magnificent Seven buildings, enjoy local street food at Maracas Beach, and end with a sunset view at Fort George.",
+            inclusions: "Transportation, guided tour, lunch, entrance fees.",
+            exclusions: "Personal shopping, additional snacks, alcoholic beverages.",
+            whatToBring: "Comfortable walking shoes, sunscreen, hat, camera.",
+            image: "./img/img1.jfif"
+        },
+        "gasparee-caves": {
+            title: "Tour the Gasparee Caves",
+            date: "March 15, 2025",
+            guide: "Sophia Williams",
+            price: { individual: 200, couple: 380, family: 700 },
+            description: "Embark on an unforgettable adventure to the famous Gasparee Caves, known for their stunning limestone formations and underground pools.",
+            itinerary: "Boat ride to Gasparee Island, guided cave exploration, swimming in the natural pool, and a picnic lunch on the island.",
+            inclusions: "Boat transfers, cave guide, lunch, safety gear.",
+            exclusions: "Swimwear, towels, extra drinks.",
+            whatToBring: "Swimwear, towel, water shoes, change of clothes.",
+            image: "./img/two.jpeg"
+        },
+        "trinidad-north-coast": {
+            title: "Trinidad North Coast Experience",
+            date: "April 20, 2025",
+            guide: "David Smith",
+            price: { individual: 180, couple: 340, family: 620 },
+            description: "Dive into the crystal-clear waters of Trinidad’s North Coast, home to some of the best coral reefs and marine life in the Caribbean.",
+            itinerary: "Snorkeling at Maracas Bay, boat tour to Paria Bay, beach relaxation, and a seafood dinner.",
+            inclusions: "Snorkeling gear, boat tour, dinner, guide services.",
+            exclusions: "Drinks, personal expenses.",
+            whatToBring: "Swimwear, sunscreen, snorkeling mask (optional), towel.",
+            image: "./img/img3.png"
+        },
+        "caribbean-island": {
+            title: "Caribbean Island Getaway",
+            date: "May 12, 2025",
+            guide: "Emma Johnson",
+            price: { individual: 250, couple: 480, family: 900 },
+            description: "Unwind on pristine beaches, swim in turquoise waters, and soak in the tropical vibes of this Caribbean paradise.",
+            itinerary: "Beach hopping, kayaking, sunset cruise, and a beach BBQ.",
+            inclusions: "Accommodation, meals, kayak rental, cruise.",
+            exclusions: "Airfare, souvenirs, spa treatments.",
+            whatToBring: "Light clothing, flip-flops, sunglasses, beach bag.",
+            image: "./img/caribbean.jpg"
+        },
+        "amazon-adventure": {
+            title: "Amazon Rainforest Adventure",
+            date: "June 8, 2025",
+            guide: "Michael Brown",
+            price: { individual: 300, couple: 580, family: 1100 },
+            description: "Journey deep into the Amazon Rainforest to explore its wildlife, rivers, and indigenous cultures with expert local guides.",
+            itinerary: "Jungle trekking, canoeing on the Amazon River, night safari, and a visit to a local village.",
+            inclusions: "Accommodation, all meals, guide, canoe trips.",
+            exclusions: "Travel insurance, insect repellent.",
+            whatToBring: "Long-sleeve shirt, insect repellent, hiking boots, binoculars.",
+            image: "./img/amazon.jpg"
+        },
+        "northern-lights": {
+            title: "Northern Lights in Norway",
+            date: "July 19, 2025",
+            guide: "Olivia Davis",
+            price: { individual: 400, couple: 780, family: 1500 },
+            description: "Chase the magical Aurora Borealis in Norway, a bucket-list experience filled with stunning landscapes and cozy nights.",
+            itinerary: "Snowmobile ride, Northern Lights viewing, visit to a Sami village, and hot chocolate by the fire.",
+            inclusions: "Warm clothing rental, snowmobile, guide, meals.",
+            exclusions: "Airfare, personal photography gear.",
+            whatToBring: "Warm layers, camera, gloves, scarf.",
+            image: "./img/northern-lights.jpg"
+        }
+    };
+
+    if (eventDetails[eventId]) {
+        const event = eventDetails[eventId];
+        document.getElementById("event-title").textContent = event.title;
+        document.getElementById("event-image").src = event.image;
+        document.getElementById("event-date").textContent = event.date;
+        document.getElementById("event-guide").textContent = event.guide;
+        document.getElementById("event-price-individual").textContent = event.price.individual;
+        document.getElementById("event-price-couple").textContent = event.price.couple;
+        document.getElementById("event-price-family").textContent = event.price.family;
+        document.getElementById("event-description").textContent = event.description;
+        document.getElementById("event-itinerary").textContent = event.itinerary;
+        document.getElementById("event-inclusions").textContent = event.inclusions;
+        document.getElementById("event-exclusions").textContent = event.exclusions;
+        document.getElementById("event-what-to-bring").textContent = event.whatToBring;
+    } else {
+        document.getElementById("event-title").textContent = "Event Not Found";
+        document.getElementById("event-description").textContent = "The event you selected does not exist.";
+        document.getElementById("event-image").style.display = "none";
+        document.querySelector(".event-info").style.display = "none";
+        document.querySelector(".pricing").style.display = "none";
+        document.querySelector(".itinerary").style.display = "none";
+        document.querySelector(".inclusions").style.display = "none";
+        document.querySelector(".what-to-bring").style.display = "none";
+        document.querySelector(".contact-us").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
